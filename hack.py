@@ -17,7 +17,7 @@ for wildFile in wildFileList:
 
 for file in fileList:
     linesOut = []
-    fileIn = open(directory + file, "r")
+    fileIn = open(file, "r")
     for lineIn in fileIn:
         splitLine = lineIn.split(" ")
         lineStart = splitLine[0]
@@ -28,14 +28,14 @@ for file in fileList:
                 linesOut.append(lineStart + " " + str(scaleLevel(int(splitData[0]))) + "," + splitData[1])
                 continue
             elif len(splitData) == 3:
-                linesOut.append(lineStart + " " + EV_LEVEL, "," + str(scaleLevel(int(splitData[1]))) + "," + splitData[2])
+                linesOut.append(lineStart + " EV_LEVEL," + str(scaleLevel(int(splitData[1]))) + "," + splitData[2])
                 continue
 
         linesOut.append(lineIn)
 
     fileIn.close()
 
-    fileOut = open(directory + file, "w")
+    fileOut = open(file, "w")
 
     for lineOut in linesOut:
         fileOut.write(lineOut)
