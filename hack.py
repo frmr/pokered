@@ -6,10 +6,14 @@ maxLevel = 63
 def scaleLevel(original):
     return minLevel + int(float(original) / 100.0 * float(maxLevel - minLevel))
 
-directory = "../data/wildPokemon/"
+directory = "data/wildPokemon/"
 
-fileList = os.listdir(directory);
-fileList.append("../data/evos_moves.asm")
+fileList = ["data/evos_moves.asm"]
+
+wildFileList = os.listdir(directory);
+
+for wildFile in wildFileList:
+    fileList.append(directory + wildFile)
 
 for file in fileList:
     linesOut = []
