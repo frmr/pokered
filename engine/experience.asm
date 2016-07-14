@@ -37,8 +37,7 @@ CalcLevelFromExperience:
 	dec d ; since the exp was too high on the last loop iteration, go back to the previous value and return
 	; HACK_START - Add 50 to level
 	ld a, d
-	ld b, 50
-	add a, b
+	add 50
 	ld d, a
 	; HACK_END
 	ret
