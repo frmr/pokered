@@ -90,7 +90,7 @@ def generateWildPokemonVersion(lines, version):
             elif lineType == "LineType_If":
                 if line.split(" ")[1].strip() == "DEF(" + version + ")":
                     linesOut.append(line)
-                else
+                else:
                     inWrongDefBlock = True
             elif lineType == "LineType_End":
                     linesOut.append(line)
