@@ -30,12 +30,12 @@ def scaleEvolutionsAndMoves():
     linesOut = [getScaledLine(line, 1) for line in getFileLines(filename)]
     writeLinesToFile(linesOut, filename)
 
-def scaleWildPokemon:
+def scaleWildPokemon():
     directory = "data/wildPokemon/"
-    fileList += [directory + name for name in os.listdir(directory)]
+    fileList = [directory + name for name in os.listdir(directory)]
     for fileIn in fileList:
         linesOut = [getScaledLine(line,0) for line in getFileLines(fileIn)]
-        writeLinesToFile(linesOut)
+        writeLinesToFile(linesOut, fileIn)
 
 
 scaleEvolutionsAndMoves()
