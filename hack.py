@@ -1,4 +1,5 @@
 import os
+import sys
 
 minLevel = 51
 maxLevel = 63
@@ -9,32 +10,62 @@ def getFileLines(filename):
 def writeLinesToFile(lines, filename):
     open(filename, "w").writelines(lines)
 
-def scaleLevel(original):
-    return minLevel + int(float(original) / 100.0 * float(maxLevel - minLevel))
+def scaleLevel(level):
+    return minLevel + int(float(level) / 100.0 * float(maxLevel - minLevel))
 
-def getScaledLine(line, offset):
+def deduceLineType(line):
+    splitLine = line.split(" ")
+    if splitLine[0].strip() == "db":
+        args = splitLine[1].split(",")
+        if args[0] == "EV_LEVEL":
+            return "LineType_EvolutionLevel"
+        elif args[0] == "EV_ITEM":
+            return "LineType_EvolutionItem"
+        elif args[0] == "$FF":
+            return "LineType_PartyList"
+        else:
+            if len(args) == 2:
+                return "LineType_LevelDeclaration"
+
+    return "LineType_Other"
+
+def getScaledLineEvolutionLevel(line):
     splitLine = line.split(" ")
     lineStart = splitLine[0]
-    if lineStart == "\tdb" or lineStart == "\t\tdb":
-        data = splitLine[1]
-        splitData = data.split(",")
-        if len(splitData) == 2:
-            return lineStart + " " + str(scaleLevel(int(splitData[0]))) + "," + splitData[1]
-        elif len(splitData) == 3:
-            return lineStart + " EV_LEVEL," + str(scaleLevel(int(splitData[1]))) + "," + splitData[2]
+    args = splitLine[1].split(",")
+    return lineStart + " EV_LEVEL," + str(scaleLevel(int(args[1])) + 1) + "," + args[2]
 
-    return line
+def getScaledLineLevelDeclaration(line):
+    splitLine = line.split(" ")
+    lineStart = splitLine[0]
+    args = splitLine[1].split(",")
+    return lineStart + " " + str(scaleLevel(int(args[0]))) + "," + args[1]
+
+def getScaledLine(line):
+    lineType = deduceLineType(line)
+    if lineType == "LineType_EvolutionLevel":
+        return getScaledLineEvolutionLevel(line)
+    elif lineType == "LineType_EvolutionItem":
+        return line
+    elif lineType == "LineType_PartyList":
+        return line
+    elif lineType == "LineType_LevelDeclaration":
+        return getScaledLineLevelDeclaration(line)
+    elif lineType == "LineType_Other":
+        return line
+    else:
+        sys.exit("Unknown line type: " + lineType)
 
 def scaleEvolutionsAndMoves():
     filename = "data/evos_moves.asm"
-    linesOut = [getScaledLine(line, 1) for line in getFileLines(filename)]
+    linesOut = [getScaledLine(line) for line in getFileLines(filename)]
     writeLinesToFile(linesOut, filename)
 
 def scaleWildPokemon():
     directory = "data/wildPokemon/"
     fileList = [directory + name for name in os.listdir(directory)]
     for fileIn in fileList:
-        linesOut = [getScaledLine(line,0) for line in getFileLines(fileIn)]
+        linesOut = [getScaledLine(line) for line in getFileLines(fileIn)]
         writeLinesToFile(linesOut, fileIn)
 
 
