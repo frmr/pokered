@@ -3,41 +3,37 @@ import os
 minLevel = 51
 maxLevel = 63
 
+def getFileLines(filename):
+    return open(filename, "r").readlines()
+
+def writeLinesToFile(lines, filename):
+    open(filename, "w").writelines(lines)
+
 def scaleLevel(original):
     return minLevel + int(float(original) / 100.0 * float(maxLevel - minLevel))
 
-directory = "data/wildPokemon/"
+def getScaledLine(line, offset):
+    splitLine = line.split(" ")
+    lineStart = splitLine[0]
+    if lineStart == "\tdb" or lineStart == "\t\tdb":
+        data = splitLine[1]
+        splitData = data.split(",")
+        if len(splitData) == 2:
+            return lineStart + " " + str(scaleLevel(int(splitData[0]))) + "," + splitData[1]
+        elif len(splitData) == 3:
+            return lineStart + " EV_LEVEL," + str(scaleLevel(int(splitData[1]))) + "," + splitData[2]
+
+    return line
+
+#def scaleWildPokemonLevels:
 
 fileList = ["data/evos_moves.asm"]
+directory = "data/wildPokemon/"
+fileList += [directory + name for name in os.listdir(directory)]
 
-wildFileList = os.listdir(directory);
-
-for wildFile in wildFileList:
-    fileList.append(directory + wildFile)
-
-for file in fileList:
+for fileIn in fileList:
     linesOut = []
-    fileIn = open(file, "r")
-    for lineIn in fileIn:
-        splitLine = lineIn.split(" ")
-        lineStart = splitLine[0]
-        if lineStart == "\tdb" or lineStart == "\t\tdb":
-            data = splitLine[1]
-            splitData = data.split(",")
-            if len(splitData) == 2:
-                linesOut.append(lineStart + " " + str(scaleLevel(int(splitData[0]))) + "," + splitData[1])
-                continue
-            elif len(splitData) == 3:
-                linesOut.append(lineStart + " EV_LEVEL," + str(scaleLevel(int(splitData[1]))) + "," + splitData[2])
-                continue
+    for lineIn in getFileLines(fileIn):
+        linesOut.append(getScaledLine(lineIn, 0))
 
-        linesOut.append(lineIn)
-
-    fileIn.close()
-
-    fileOut = open(file, "w")
-
-    for lineOut in linesOut:
-        fileOut.write(lineOut)
-
-    fileOut.close()
+    writeLinesToFile(linesOut, fileIn)
