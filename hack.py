@@ -3,7 +3,7 @@ import sys
 
 minLevel = 51
 maxLevel = 63
-wildLevels = 2
+wildLevel = 51
 
 def throwLineTypeError(lineType):
     sys.exit("Unknown line type: " + lineType)
@@ -75,8 +75,7 @@ def scaleEvolutionsAndMoves():
 
 def generateWildPokemonDeclarations(pokemon):
     linesOut = []
-    for level in range(minLevel, minLevel + wildLevels):
-        linesOut.append("\t\tdb " + str(level) + "," + pokemon + "\n")
+    linesOut.append("\t\tdb " + str(wildLevel) + "," + pokemon + "\n")
     return linesOut
 
 def generateWildPokemonFile(filename):
