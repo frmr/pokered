@@ -25,15 +25,18 @@ def getScaledLine(line, offset):
 
     return line
 
-#def scaleWildPokemonLevels:
+def scaleEvolutionsAndMoves():
+    filename = "data/evos_moves.asm"
+    linesOut = [getScaledLine(line, 1) for line in getFileLines(filename)]
+    writeLinesToFile(linesOut, filename)
 
-fileList = ["data/evos_moves.asm"]
-directory = "data/wildPokemon/"
-fileList += [directory + name for name in os.listdir(directory)]
+def scaleWildPokemon:
+    directory = "data/wildPokemon/"
+    fileList += [directory + name for name in os.listdir(directory)]
+    for fileIn in fileList:
+        linesOut = [getScaledLine(line,0) for line in getFileLines(fileIn)]
+        writeLinesToFile(linesOut)
 
-for fileIn in fileList:
-    linesOut = []
-    for lineIn in getFileLines(fileIn):
-        linesOut.append(getScaledLine(lineIn, 0))
 
-    writeLinesToFile(linesOut, fileIn)
+scaleEvolutionsAndMoves()
+scaleWildPokemon()
