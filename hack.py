@@ -4,6 +4,9 @@ import sys
 minLevel = 51
 maxLevel = 63
 
+def throwLineTypeError(lineType):
+    sys.exit("Unknown line type: " + lineType)
+
 def getFileLines(filename):
     return open(filename, "r").readlines()
 
@@ -26,6 +29,10 @@ def deduceLineType(line):
         else:
             if len(args) == 2:
                 return "LineType_LevelDeclaration"
+    elif splitLine[0].strip() == "IF":
+        return "LineType_If"
+    elif splitLine[0].strip() == "ENDC":
+        return "LineType_End"
 
     return "LineType_Other"
 
@@ -51,23 +58,45 @@ def getScaledLine(line):
         return line
     elif lineType == "LineType_LevelDeclaration":
         return getScaledLineLevelDeclaration(line)
+    elif lineType == "LineType_If":
+        return line
+    elif lineType == "LineType_End":
+        return line
     elif lineType == "LineType_Other":
         return line
     else:
-        sys.exit("Unknown line type: " + lineType)
+        throwLineTypeError(lineType)
 
 def scaleEvolutionsAndMoves():
     filename = "data/evos_moves.asm"
     linesOut = [getScaledLine(line) for line in getFileLines(filename)]
     writeLinesToFile(linesOut, filename)
 
+
+def generateWildPokemonDeclarations(version):
+    
+
+def countWildPokemon(lines, version):
+    countMap = {}
+    for
+
+def scaleWildPokemonFile(filename):
+    lines = getFileLines(filename)
+    #copy first two lines verbatim
+
+    wildCount = countWildPokemon(lines, "_RED")
+
+
+    #copy last line verbatim
+    for pokemon, count in countMap.iteritems():
+
 def scaleWildPokemon():
     directory = "data/wildPokemon/"
-    fileList = [directory + name for name in os.listdir(directory)]
-    for fileIn in fileList:
-        linesOut = [getScaledLine(line) for line in getFileLines(fileIn)]
-        writeLinesToFile(linesOut, fileIn)
+    filenames = [directory + name for name in os.listdir(directory)]
 
+    for filename in filenames:
+        linesOut = generateWildPokemonDeclarations(filename);
+        writeLinesToFile(linesOut, filename)
 
 scaleEvolutionsAndMoves()
 scaleWildPokemon()
