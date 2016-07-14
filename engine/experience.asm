@@ -6,13 +6,19 @@ CalcLevelFromExperience:
 	ld d, $1 ; init level to 1
 .loop
 	inc d ; increment level
-	; HACK_START - Multiply level by 8
+	; HACK_START - Multiply level by 8 and add 50
 	sla d
 	sla d
 	sla d
+	ld a, d
+	add 50
+	ld d, a
 	; HACK_END
 	call CalcExperience
-	; HACK_START - Divide level by 8
+	; HACK_START - Subtract 50 Divide level by 8
+	ld a, d
+	sub 50
+	ld d, a
 	srl d
 	srl d
 	srl d
