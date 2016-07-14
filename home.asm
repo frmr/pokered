@@ -517,6 +517,7 @@ PrintLevel::
 	ld [hli],a
 	ld c,2 ; number of digits
 	ld a,[wLoadedMonLevel] ; level
+	sub 50 ; HACK
 	cp 100
 	jr c,PrintLevelCommon
 ; if level at least 100, write over the ":L" tile
