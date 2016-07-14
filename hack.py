@@ -3,6 +3,7 @@ import sys
 
 minLevel = 51
 maxLevel = 63
+wildLevels = 5
 
 def throwLineTypeError(lineType):
     sys.exit("Unknown line type: " + lineType)
@@ -72,30 +73,50 @@ def scaleEvolutionsAndMoves():
     linesOut = [getScaledLine(line) for line in getFileLines(filename)]
     writeLinesToFile(linesOut, filename)
 
+def generateWildPokemonDeclarations(pokemon):
+    linesOut = []
+    for level in range(minLevel, minLevel + wildLevels):
+        linesOut.append("\t\tdb " + level + "," + pokemon)
+    return linesOut
 
-def generateWildPokemonDeclarations(version):
-    
+def generateWildPokemonVersion(lines, version):
+    linesOut = ["\tIF DEF(" + version + ")"]
+    inWrongDefBlock = False
+    for line in lines:
+        lineType = deduceLineType(line)
+        if not inWrongDefBlock:
+            if lineType == "LineType_LevelDeclaration":
+                linesOut += generateWildPokemonDeclarations(line.split(",")[1].strip())
+            elif lineType == "LineType_If":
+                if line.split(" ")[1].strip() != "DEF(" + version + ")":
+                    inWrongDefBlock = True
+        else:
+            if lineType == "LineType_End":
+                inWrongDefBlock = False
 
-def countWildPokemon(lines, version):
-    countMap = {}
-    for
+    linesOut.append("\tENDC")
+    return linesOut
 
-def scaleWildPokemonFile(filename):
-    lines = getFileLines(filename)
+def generateWildPokemonFile(filename):
+    linesIn = getFileLines(filename)
+
     #copy first two lines verbatim
+    linesOut = linesIn[:2]
 
-    wildCount = countWildPokemon(lines, "_RED")
-
+    #generate wild pokemon for each version
+    linesOut += generateWildPokemonVersion(lines[2:-1], "_RED")
+    linesOut += generateWildPokemonVersion(lines[2:-1], "_BLUE")
 
     #copy last line verbatim
-    for pokemon, count in countMap.iteritems():
+    linesOut.append(lines[-1])
+
 
 def scaleWildPokemon():
     directory = "data/wildPokemon/"
     filenames = [directory + name for name in os.listdir(directory)]
 
     for filename in filenames:
-        linesOut = generateWildPokemonDeclarations(filename);
+        linesOut = generateWildPokemonFile(filename);
         writeLinesToFile(linesOut, filename)
 
 scaleEvolutionsAndMoves()
