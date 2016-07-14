@@ -80,16 +80,20 @@ def generateWildPokemonDeclarations(pokemon):
     return linesOut
 
 def generateWildPokemonVersion(lines, version):
-    linesOut = ["\tIF DEF(" + version + ")\n"]
     inWrongDefBlock = False
+    linesOut = []
     for line in lines:
         lineType = deduceLineType(line)
         if not inWrongDefBlock:
             if lineType == "LineType_LevelDeclaration":
                 linesOut += generateWildPokemonDeclarations(line.split(",")[1].strip())
             elif lineType == "LineType_If":
-                if line.split(" ")[1].strip() != "DEF(" + version + ")":
+                if line.split(" ")[1].strip() == "DEF(" + version + ")":
+                    linesOut.append(line)
+                else
                     inWrongDefBlock = True
+            elif lineType == "LineType_End":
+                    linesOut.append(line)
         else:
             if lineType == "LineType_End":
                 inWrongDefBlock = False
