@@ -107,7 +107,7 @@ def generateWildPokemonFile(filename):
     linesOut = linesIn[:2]
 
     #generate declarations
-    for line in lines[2:-1]:
+    for line in linesIn[2:-1]:
         if deduceLineType(line) == "LineType_LevelDeclaration":
             linesOut += generateWildPokemonDeclarations(line.split(",")[1].strip())
         else:
