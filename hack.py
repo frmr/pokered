@@ -97,8 +97,6 @@ def generateWildPokemonVersion(lines, version):
         else:
             if lineType == "LineType_End":
                 inWrongDefBlock = False
-
-    linesOut.append("\tENDC\n")
     return linesOut
 
 def generateWildPokemonFile(filename):
@@ -108,9 +106,14 @@ def generateWildPokemonFile(filename):
     #copy first two lines verbatim
     linesOut = linesIn[:2]
 
-    #generate wild pokemon for each version
-    linesOut += generateWildPokemonVersion(linesIn[2:-1], "_RED")
-    linesOut += generateWildPokemonVersion(linesIn[2:-1], "_BLUE")
+    #generate declarations
+    for line in lines[2:-1]:
+        lineType = deduceLineType(line)
+            if lineType == "LineType_LevelDeclaration":
+                linesOut += generateWildPokemonDeclarations(line.split(",")[1].strip())
+            else:
+                linesOut.append(line)
+
 
     #copy last line verbatim
     linesOut.append(linesIn[-1])
