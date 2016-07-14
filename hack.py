@@ -3,7 +3,7 @@ import sys
 
 minLevel = 51
 maxLevel = 63
-wildLevels = 1
+wildLevels = 2
 
 def throwLineTypeError(lineType):
     sys.exit("Unknown line type: " + lineType)
