@@ -76,7 +76,7 @@ def scaleEvolutionsAndMoves():
 def generateWildPokemonDeclarations(pokemon):
     linesOut = []
     for level in range(minLevel, minLevel + wildLevels):
-        linesOut.append("\t\tdb " + level + "," + pokemon)
+        linesOut.append("\t\tdb " + str(level) + "," + pokemon)
     return linesOut
 
 def generateWildPokemonVersion(lines, version):
@@ -104,11 +104,11 @@ def generateWildPokemonFile(filename):
     linesOut = linesIn[:2]
 
     #generate wild pokemon for each version
-    linesOut += generateWildPokemonVersion(lines[2:-1], "_RED")
-    linesOut += generateWildPokemonVersion(lines[2:-1], "_BLUE")
+    linesOut += generateWildPokemonVersion(linesIn[2:-1], "_RED")
+    linesOut += generateWildPokemonVersion(linesIn[2:-1], "_BLUE")
 
     #copy last line verbatim
-    linesOut.append(lines[-1])
+    linesOut.append(linesIn[-1])
 
 
 def scaleWildPokemon():
@@ -117,6 +117,7 @@ def scaleWildPokemon():
 
     for filename in filenames:
         linesOut = generateWildPokemonFile(filename);
+        print linesOut
         writeLinesToFile(linesOut, filename)
 
 scaleEvolutionsAndMoves()
