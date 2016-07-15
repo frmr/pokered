@@ -74,6 +74,9 @@ TryDoWildEncounter:
 	ld b, 0
 	add hl, bc
 	ld a, [hli]
+	ld a, [hRandomAdd] ; HACK - Randomise wild pokemon level
+	and 3 ; HACK - Controls max wild pokemon level
+	add 51 ; HACK
 	ld [wCurEnemyLVL], a
 	ld a, [hl]
 	ld [wcf91], a
