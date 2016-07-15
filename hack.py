@@ -49,7 +49,7 @@ def getScaledLineLevelDeclaration(line):
     args = splitLine[1].split(",")
     return lineStart + " " + str(scaleLevel(int(args[0]))) + "," + args[1]
 
-def getScaledLine(line):
+def getScaledEvosMovesLine(line):
     lineType = deduceLineType(line)
     if lineType == "LineType_EvolutionLevel":
         return getScaledLineEvolutionLevel(line)
@@ -70,40 +70,19 @@ def getScaledLine(line):
 
 def scaleEvolutionsAndMoves():
     filename = "data/evos_moves.asm"
-    linesOut = [getScaledLine(line) for line in getFileLines(filename)]
+    linesOut = [getScaledEvosMovesLine(line) for line in getFileLines(filename)]
     writeLinesToFile(linesOut, filename)
 
-def generateWildPokemonDeclarations(pokemon):
-    linesOut = []
-    linesOut.append("\t\tdb " + str(wildLevel) + "," + pokemon + "\n")
-    return linesOut
+def getScaledTrainerLine(line):
+    if line.split(" ")[0].strip() == "db":
+        return "\tdb 55" + line[line.find(","):]
+    else
+        return line
 
-def generateWildPokemonFile(filename):
-    linesIn = getFileLines(filename)
-    if not linesIn:
-        return []
-    #copy first two lines verbatim
-    linesOut = linesIn[:2]
-
-    #generate declarations
-    for line in linesIn[2:-1]:
-        if deduceLineType(line) == "LineType_LevelDeclaration":
-            linesOut += generateWildPokemonDeclarations(line.split(",")[1].strip())
-        else:
-            linesOut.append(line)
-
-    #copy last line verbatim
-    linesOut.append(linesIn[-1])
-
-    return linesOut
-
-def scaleWildPokemon():
-    directory = "data/wildPokemon/"
-    filenames = [directory + name for name in os.listdir(directory)]
-
-    for filename in filenames:
-        linesOut = generateWildPokemonFile(filename);
-        writeLinesToFile(linesOut, filename)
+def setTrainerPartyLevels():
+    filename = "data/trainer_parties.asm"
+    linesOut = [getScaledTrainerLine(line) for line in getFileLines(filename)[58:336]]
+    writeLinesToFile(linesOut, filename)
 
 scaleEvolutionsAndMoves()
-scaleWildPokemon()
+setTrainerPartyLevels()
