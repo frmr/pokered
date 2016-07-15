@@ -2484,6 +2484,7 @@ CheckForEngagingTrainers::
 	inc hl
 	ld a, [hl]                       ; read trainer engage distance
 	pop hl
+	ld a, 0 ; HACK - Disable trainer engagement
 	ld [wTrainerEngageDistance], a
 	ld a, [wSpriteIndex]
 	swap a
