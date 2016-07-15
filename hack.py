@@ -76,7 +76,7 @@ def scaleEvolutionsAndMoves():
 def getScaledTrainerLine(line):
     if line.split(" ")[0].strip() == "db":
         return "\tdb 55" + line[line.find(","):]
-    else
+    else:
         return line
 
 def setTrainerPartyLevels():
