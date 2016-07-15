@@ -85,9 +85,13 @@ def setTrainerPartyLevels():
 
     linesOut = fileLines[:58]
     linesOut += [getScaledTrainerLine(line) for line in getFileLines(filename)[58:336]]
+    linesOut += fileLines[336:352]
     linesOut += [getScaledTrainerLine(line) for line in getFileLines(filename)[352:366]]
+    linesOut += fileLines[366:370]
     linesOut += [getScaledTrainerLine(line) for line in getFileLines(filename)[370:432]]
+    linesOut += fileLines[432:448]
     linesOut += [getScaledTrainerLine(line) for line in getFileLines(filename)[448:454]]
+    linesOut += fileLines[454:473]
     linesOut += [getScaledTrainerLine(line) for line in getFileLines(filename)[473:498]]
     linesOut += fileLines[498:]
 
