@@ -89,7 +89,7 @@ def setTrainerPartyLevels():
     linesOut += [getScaledTrainerLine(line) for line in getFileLines(filename)[370:432]]
     linesOut += [getScaledTrainerLine(line) for line in getFileLines(filename)[448:454]]
     linesOut += [getScaledTrainerLine(line) for line in getFileLines(filename)[473:498]]
-    linesOut += filesLines[498:]
+    linesOut += fileLines[498:]
 
     writeLinesToFile(linesOut, filename)
 
