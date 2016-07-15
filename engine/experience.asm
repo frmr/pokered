@@ -7,19 +7,23 @@ CalcLevelFromExperience:
 .loop
 	inc d ; increment level
 	; HACK_START - Multiply level by 4 and add 50
+	push af
 	sla d
 	sla d
 	ld a, d
 	add 50
 	ld d, a
+	pop af
 	; HACK_END
 	call CalcExperience
 	; HACK_START - Subtract 50 and divide level by 4
+	push af
 	ld a, d
 	sub 50
 	ld d, a
 	srl d
 	srl d
+	pop af
 	; HACK_END
 	push hl
 	ld hl, wLoadedMonExp + 2 ; current exp
@@ -40,9 +44,11 @@ CalcLevelFromExperience:
 	jr nc, .loop ; if exp needed for level d is not greater than exp, try the next level
 	dec d ; since the exp was too high on the last loop iteration, go back to the previous value and return
 	; HACK_START - Add 50 to level
+	push af
 	ld a, d
 	add 50
 	ld d, a
+	pop af
 	; HACK_END
 	ret
 
