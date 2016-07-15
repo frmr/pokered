@@ -81,7 +81,16 @@ def getScaledTrainerLine(line):
 
 def setTrainerPartyLevels():
     filename = "data/trainer_parties.asm"
-    linesOut = [getScaledTrainerLine(line) for line in getFileLines(filename)[58:336]]
+    fileLines = getFileLines(filename)
+
+    linesOut = fileLines[:58]
+    linesOut += [getScaledTrainerLine(line) for line in getFileLines(filename)[58:336]]
+    linesOut += [getScaledTrainerLine(line) for line in getFileLines(filename)[352:366]]
+    linesOut += [getScaledTrainerLine(line) for line in getFileLines(filename)[370:432]]
+    linesOut += [getScaledTrainerLine(line) for line in getFileLines(filename)[448:454]]
+    linesOut += [getScaledTrainerLine(line) for line in getFileLines(filename)[473:498]]
+    linesOut += filesLines[498:]
+
     writeLinesToFile(linesOut, filename)
 
 scaleEvolutionsAndMoves()
