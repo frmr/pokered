@@ -4477,7 +4477,7 @@ InitPlayerData2:
 	ld hl, wNumBoxItems
 	call InitializeEmptyList
 
-START_MONEY EQU $3000
+START_MONEY EQU $8000
 	ld hl, wPlayerMoney + 1
 	ld a, START_MONEY / $100
 	ld [hld], a
