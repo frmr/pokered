@@ -1614,7 +1614,7 @@ TryRunningFromBattle:
 	jr nc, .canEscape ; jump if player speed greater than enemy speed
 	xor a
 	ld [H_MULTIPLICAND], a
-	ld a, 32
+	ld a, 64 ; HACK - Doubled from 32 to make initial run attempt easier
 	ld [H_MULTIPLIER], a
 	call Multiply ; multiply player speed by 32
 	ld a, [H_PRODUCT + 2]
