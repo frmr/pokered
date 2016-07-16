@@ -6,23 +6,19 @@ CalcLevelFromExperience:
 	ld d, $1 ; init level to 1
 .loop
 	inc d ; increment level
-	; HACK_START - Multiply level by 4 and add 50
+	; HACK_START - Add 50
 	push af
-	sla d
-	sla d
 	ld a, d
 	add 50
 	ld d, a
 	pop af
 	; HACK_END
 	call CalcExperience
-	; HACK_START - Subtract 50 and divide level by 4
+	; HACK_START - Subtract 50
 	push af
 	ld a, d
 	sub 50
 	ld d, a
-	srl d
-	srl d
 	pop af
 	; HACK_END
 	push hl
@@ -54,6 +50,16 @@ CalcLevelFromExperience:
 
 ; calculates the amount of experience needed for level d
 CalcExperience:
+	; HACK_START - Subtract 50, multiply by 4, add 50
+	push af
+	ld a, d
+	sub 50
+	sla d
+	sla d
+	add 50
+	ld d, a
+	pop af
+	; HACK_END
 	ld a, [wMonHGrowthRate]
 	add a
 	add a
@@ -159,6 +165,16 @@ CalcExperience:
 	ld a, [hExperience]
 	adc b
 	ld [hExperience], a
+	; HACK_START - Subtract 50, divide by 4, add 50
+	push af
+	ld a, d
+	sub 50
+	srl d
+	srl d
+	add 50
+	ld d, a
+	pop af
+	; HACK_END
 	ret
 
 ; calculates d*d
