@@ -21,7 +21,6 @@ PewterCityScript0:
 	ret
 
 PewterCityScript_1925e:
-	SetEvent EVENT_BEAT_BROCK ; HACK
 	CheckEvent EVENT_BEAT_BROCK
 	ret nz
 	ld hl, CoordsData_19277
@@ -34,10 +33,10 @@ PewterCityScript_1925e:
 	jp DisplayTextID
 
 CoordsData_19277:
-	db $11,$23
-	db $11,$24
-	db $12,$25
-	db $13,$25
+	; db $11,$23 ; HACK
+	; db $11,$24 ; HACK
+	; db $12,$25 ; HACK
+	; db $13,$25 ; HACK
 	db $ff
 
 PewterCityScript1:
